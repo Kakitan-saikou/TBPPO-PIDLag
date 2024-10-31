@@ -1,0 +1,81 @@
+algo: ttd3
+envparameters:
+  action_continuous: true
+  action_space: 1
+  n_player: 1
+  obs_continuous: true
+  obs_space: 3
+  action_interval: 1
+  action_max: 0.5  #WASTED
+  action_max_0: 1.0
+  action_max_1: 0.3
+scenario: iff
+hyperparameters:
+  mode: 'separate_Q'
+  n_ensemble: 8
+  load_pretrained: false
+  load_actor: false
+  load_critic: false
+  cls: false
+  batch_size: 256
+  offline_batch_size: 1600
+  buffer_capacity: 10000
+  c_lr: 0.005 #0.005
+  a_lr: 0.0006
+  q_lr: 0.001 #0.0005
+  context_len: 30
+  n_layer: 2
+  n_head: 2  #2
+  n_embed: 32  #32
+  gamma: 0.99
+  ppo_epoch: 10
+  ppo_clip: 0.2
+  ppo_entropy: 0.01
+  grad_norm_clip: 0.5
+  gae_lambda: 0.95
+  St: 0.2
+  AD: 0.1
+  theta: 70
+  Phi: 190
+  is_double_q: false #IQL
+  sa_type: 'separate' #'separate' or 'concat'
+  omega: 0.8
+  target_update_freq: 2
+  tau: 0.005
+  actor_path: None
+  critic_path: None
+transition:
+  d_lr: 0.001
+  prediction_type: 'original' #'original' f(s,a) -> s' or 'delta' f(s,a) -> s'-s
+  uncertainty_mode: 'aleatoric'
+  sa2s: true #if true E(s)+E(a)->s'; false E(s)->s', E is encoder
+seedparameters:
+  seed_nn: 1
+  seed_np: 1
+  seed_random: 1
+trainingparameters:
+  evaluate_rate: 50
+  max_episodes: 300
+  render: false
+  save_interval: 100
+IFF:
+  n_iff: 8
+  interval: 10
+  excution_time: 0.030
+  steady_time: 0.0  #steady observations
+  control_frequency: 20
+  motor_velocity: 0.15
+  refresh_time: 12
+  starting_index: 0 #Default=0
+  bf_directory: "BFTEST1"
+LPFilter: #wasted
+  sample_rate: 220
+  cutoff_freq: 10.0
+  order: 5
+time_weight: 50
+y_weight: 0
+alpha_weight: 50
+rl_train: true
+save: true
+seed: 0
+rl_directory: "RLtest/TTD3"

@@ -1,0 +1,102 @@
+algo: tbpo
+device: 'cuda:3'
+envparameters:
+  action_continuous: true
+  action_space: 1
+  n_player: 1
+  obs_continuous: true
+  obs_space: 3
+  action_interval: 2
+  action_max: 12.0  #WASTED
+  action_max_0: 1.0
+  action_max_1: 0.3
+scenario: iff
+hyperparameters:
+  mode: 'separate_Q'
+  sigma_type: 'share' #'share'-> global torch.param (action_dim,); 'variable', predicted by NN at each step
+  n_ensemble: 4
+  load_pretrained: false
+  load_actor: false
+  load_critic: false
+  cls: true
+  batch_size: 256
+  offline_batch_size: 1600
+  buffer_capacity: 10000
+  c_lr: 0.0002 #0.005
+  a_lr: 0.00006
+  q_lr: 0.0001 #0.0005
+  context_len: 40
+  n_layer: 2
+  n_head: 2  #2
+  n_embed: 64  #32
+  gamma: 0.99
+  ppo_epoch: 1
+  ppo_clip: 0.2
+  ppo_entropy: 0.01
+  grad_norm_clip: 0.5
+  gae_lambda: 0.95
+  St: 0.2
+  AD: 0.1
+  theta: 70
+  Phi: 190
+  r_alpha: 1.0
+  r_beta: 1.0
+  r_gamma: 0.4
+offline:
+  is_double_q: true #IQL
+  sa_type: 'separate' #'separate' or 'concat'
+  omega: 0.9
+  target_update_freq: 2
+  tau: 0.005
+  offline_epoch: 1
+  actor_path: None
+  critic_path: None
+  bc_kl: 'data'
+  kl_alpha: 0.1
+  mu_ratio: 1.0
+  dist_ratio: 1.0
+  entropy_ratio: 0.01
+  offline_episodes: 12000
+  ope_length: 80
+  offline_batch_size: 128
+  offline_timesteps: 64
+  offline_eval: 10
+  update_type: 'optimistic' # conservative or optimistic or bet-on-Q/G
+  adv_type: 'TD0' #IQL or TD0
+  rollout_bias: 0 # The avg bias of the transition model
+  reverse_steps: 50 #If policy can not get better for X updates, reverse it to old pi
+transition:
+  d_lr: 0.001
+  prediction_type: 'original' #'original' f(s,a) -> s' or 'delta' f(s,a) -> s'-s
+  uncertainty_mode: 'aleatoric'
+  sa2s: true #if true E(s)+E(a)->s'; false E(s)->s', E is encoder
+seedparameters:
+  seed_nn: 1
+  seed_np: 1
+  seed_random: 1
+trainingparameters:
+  evaluate_rate: 50
+  max_episodes: 300
+  render: false
+  save_interval: 100
+IFF:
+  n_iff: 8
+  interval: 10
+  excution_time: 0.035
+  steady_time: 0.0  #steady observations
+  control_frequency: 20
+  motor_velocity: 0.15
+  refresh_time: 12
+  starting_index: 996 #Default=0
+  bf_directory: "BF0822"
+LPFilter: #wasted
+  sample_rate: 220
+  cutoff_freq: 10.0
+  order: 5
+time_weight: 50
+y_weight: 0
+alpha_weight: 50
+rl_train: false
+save: true
+seed: 0
+rl_directory: "RLtest/TPPO"
